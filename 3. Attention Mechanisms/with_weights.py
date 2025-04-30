@@ -39,7 +39,7 @@ print("values.shape: ", values.shape)
 
 keys_2 = keys[1] #key value for the second word
 attention_score_22 = query_2.dot(keys_2)  
-print(attention_score_22)
+print("attention score for second word with second word: ", attention_score_22)
 
 #generalize this computation to all attention scores via matrix multiplication
 attention_score_2 = query_2 @ keys.T #query_2 = [x1, x2] (1, 2), keys.T = (2, 5)
@@ -54,9 +54,20 @@ keys.T = [[1, 3, 5],
 '''
 print("all attention scores for the second word: ", attention_score_2) #the second element in the output matches the attention score 22 we calculated previosuly
 
-#now we want to go from the attention scores to the attention weights.
-#we compute the attention weights by scaling the attention scores and using the softmax function
+#we have the attention score, now we want the attention weights that will go with the imput to determine how much the input vector matters
+#embedding dimensions of the keys, square it, and divide the attention weights by it. then put this through softmax
 
+d_k = keys.shape[-1]
+attention_weights_2 = torch.softmax(attention_score_2 / d_k**0.5, dim=-1) #attention weights for the second word
+print("attention weights for the second word", attention_weights_2)
+
+'''
+reason behind taking softmax of the attention score divided by the square root of the key embedding dimension is to avoid small gradients
+
+
+'''
+
+#compute context vectors based on the attention weights
 
 
 
